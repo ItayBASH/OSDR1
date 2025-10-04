@@ -1,0 +1,41 @@
+name: Test
+on:
+  push:
+    branches:
+      - v5
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - version: '3.10'
+            tox-env: 'py310'
+          - version: '3.11'
+            tox-env: 'py311'
+          - version: '3.12'
+            tox-env: 'py312'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python.version }}
+      - name: Ensure data/breast_mibi dir exists before restoring cache
+        run: mkdir -p data/breast_mibi
+      - name: Cache SingleCells.csv
+        uses: actions/cache@v4
+        with:
+          path: data/breast_mibi/SingleCells.csv
+          key: singlecells-v1
+      - name: Install tox
+        run: python -m pip install tox
+      - name: Run pytest
+        run: tox -e ${{ matrix.python.tox-env }}
+      - name: Check cached single_cell file is present after tox
+        run: ls -lh data/breast_mibi/SingleCells.csv || echo "Not found"        
+      - name: Find SingleCells.csv location
+        run: find . -name "SingleCells.csv"      
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

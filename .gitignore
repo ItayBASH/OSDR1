@@ -1,0 +1,28 @@
+old/
+tdm.egg-info/
+.tdm/
+.venv/
+.tox/
+# data/
+__pycache__/
+images/
+.vscode/
+.DS_Store
+supplementary_files/
+
+
+coverage.xml
+.coverage*
+log.txt
+docs/figures/plots_temp/
+.persistent_cache/
+.cached_analyses/
+
+
+# need to decide if this should be pushed to git.. heavy
+docs/reference/
+# docs/notebooks/
+dist
+build
+.310/
+docs/_build/
