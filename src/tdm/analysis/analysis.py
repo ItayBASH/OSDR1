@@ -171,12 +171,14 @@ class Analysis:
     @ndss.setter
     def ndss(self, value: list[NeighborsDataset]):
         self._ndss = value
+	neighborhoods_per_tissue = ndss
 
     @property
     def nds(self) -> NeighborsDataset:
         if not hasattr(self, "_nds"):
             self._nds = cast(NeighborsDataset, ConcatDataset(self._ndss))
         return self._nds
+	neighborhoods = nds
 
     @property
     def rnds(self) -> RestrictedNeighborsDataset:
@@ -185,6 +187,7 @@ class Analysis:
     @rnds.setter
     def rnds(self, value: RestrictedNeighborsDataset):
         self._rnds = value
+	restricted_neighborhoods = rnds
 
     @property
     def pds(self) -> PolynomialDataset:
